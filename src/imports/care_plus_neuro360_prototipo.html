@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Care Plus Neuro360 — Protótipo</title>
+<style>
+:root{
+  --primary:#8c1d4f;
+  --primary-2:#b82d69;
+  --ink:#23242a;
+  --muted:#6b7280;
+  --bg:#f6f3f5;
+  --card:#ffffff;
+  --line:#e7dde2;
+  --ok:#eaf7ef;
+  --warn:#fff5e6;
+  --danger:#fff0f2;
+  --shadow:0 16px 48px rgba(66,20,42,.14);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(135deg,#fbf8fa,#f1eef3);color:var(--ink)}
+.app-shell{min-height:100vh;display:grid;grid-template-columns:330px minmax(360px,430px) 1fr;gap:28px;padding:28px;align-items:start}
+.sidebar,.rules{background:rgba(255,255,255,.86);backdrop-filter: blur(10px);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow)}
+.sidebar{padding:24px;position:sticky;top:28px}
+.brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--primary),var(--primary-2));color:#fff;display:grid;place-items:center;font-weight:800}
+.brand h1{font-size:18px;margin:0}
+.brand small{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.nav-title{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin:18px 0 10px}
+.nav button{width:100%;border:0;background:transparent;text-align:left;padding:11px 12px;border-radius:12px;cursor:pointer;color:var(--ink);font-size:14px;margin:2px 0}
+.nav button.active,.nav button:hover{background:#f5e8ee;color:var(--primary);font-weight:700}
+.phone-wrap{display:flex;justify-content:center}
+.phone{width:100%;background:#161616;border-radius:34px;padding:10px;box-shadow:0 22px 70px rgba(0,0,0,.22);position:sticky;top:28px}
+.screen{height:780px;background:var(--bg);border-radius:26px;overflow:hidden;position:relative}
+.status{height:28px;background:#fff;display:flex;justify-content:space-between;align-items:center;padding:0 18px;font-size:11px;color:#555}
+.header{background:#fff;padding:18px 18px 14px;border-bottom:1px solid var(--line)}
+.header-top{display:flex;justify-content:space-between;align-items:center}
+.header h2{font-size:20px;margin:0}
+.header p{font-size:12px;color:var(--muted);margin:5px 0 0}
+.avatar{width:38px;height:38px;border-radius:50%;background:#f0d8e3;display:grid;place-items:center;font-weight:800;color:var(--primary)}
+.content{height:calc(100% - 147px);overflow:auto;padding:16px 16px 94px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;box-shadow:0 5px 18px rgba(70,32,49,.05)}
+.hero{background:linear-gradient(135deg,#8c1d4f,#c33f7d);color:#fff;border:0}
+.hero h3{margin:0 0 7px;font-size:19px}
+.hero p{margin:0;font-size:13px;line-height:1.4;opacity:.95}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 9px}
+.section-title h3{margin:0;font-size:14px}
+.link{color:var(--primary);font-size:12px;font-weight:700;cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quick{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;cursor:pointer}
+.quick b{font-size:13px;display:block;margin-top:8px}
+.quick span{font-size:11px;color:var(--muted)}
+.icon{width:32px;height:32px;border-radius:10px;background:#f5e8ee;display:grid;place-items:center;color:var(--primary);font-weight:900}
+.progress{height:8px;border-radius:10px;background:#eee;overflow:hidden;margin:9px 0}
+.progress i{display:block;height:100%;background:var(--primary);width:62%}
+.badge{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:700;background:#f5e8ee;color:var(--primary)}
+.row{display:flex;align-items:center;gap:11px}
+.row-between{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.prof{width:44px;height:44px;border-radius:14px;background:#efe7eb;display:grid;place-items:center;font-size:20px}
+.meta{font-size:11px;color:var(--muted)}
+.btn{width:100%;border:0;border-radius:14px;padding:13px 14px;font-weight:800;cursor:pointer;background:var(--primary);color:#fff}
+.btn.secondary{background:#fff;color:var(--primary);border:1px solid #d8b7c6}
+.btn.danger{background:#b4233a}
+.input{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff;font-size:13px}
+.label{font-size:12px;font-weight:700;margin:10px 0 6px;display:block}
+.chip{display:inline-block;border:1px solid var(--line);background:#fff;padding:8px 10px;border-radius:999px;font-size:11px;margin:3px 4px 3px 0;cursor:pointer}
+.chip.selected{background:#f5e8ee;color:var(--primary);border-color:#d7a7bc;font-weight:700}
+.timeline{position:relative;padding-left:20px}
+.timeline:before{content:"";position:absolute;left:6px;top:7px;bottom:10px;width:2px;background:#e0cbd5}
+.titem{position:relative;margin:0 0 16px}
+.titem:before{content:"";position:absolute;left:-18px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--primary)}
+.alert{padding:12px;border-radius:14px;font-size:12px;line-height:1.45}
+.alert.ok{background:var(--ok)}
+.alert.warn{background:var(--warn)}
+.alert.danger{background:var(--danger)}
+.bottom{position:absolute;left:0;right:0;bottom:0;height:76px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;padding:8px}
+.tab{font-size:10px;color:var(--muted);text-align:center;cursor:pointer;width:20%}
+.tab b{display:block;font-size:18px;margin-bottom:2px}
+.tab.active{color:var(--primary);font-weight:800}
+.hidden{display:none}
+.rules{padding:24px;min-height:780px}
+.rules h2{margin:0 0 6px;font-size:20px}
+.rules>p{color:var(--muted);font-size:13px;margin:0 0 18px}
+.rule{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;background:#fff}
+.rule b{display:block;color:var(--primary);font-size:12px;margin-bottom:6px}
+.rule p{margin:0;font-size:12px;line-height:1.45}
+.kicker{font-size:11px;color:var(--muted);margin-top:14px}
+@media(max-width:1100px){
+  .app-shell{grid-template-columns:250px minmax(360px,430px)}
+  .rules{grid-column:1/-1;position:static}
+}
+@media(max-width:760px){
+  .app-shell{display:block;padding:12px}
+  .sidebar{position:static;margin-bottom:14px}
+  .phone{position:static;max-width:430px;margin:auto}
+  .rules{margin-top:14px}
+}
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo">N360</div>
+      <div><h1>Care Plus Neuro360</h1><small>Protótipo navegável • MVP</small></div>
+    </div>
+    <div class="nav-title">Telas</div>
+    <div class="nav" id="nav"></div>
+    <div class="kicker">Clique nas telas ou nos atalhos dentro do celular para navegar.</div>
+  </aside>
+
+  <main class="phone-wrap">
+    <div class="phone">
+      <div class="screen">
+        <div class="status"><span>9:41</span><span>● ● ●  100%</span></div>
+        <div id="screenContainer"></div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="rules">
+    <h2>Regras de negócio do MVP</h2>
+    <p>Regras propostas para transformar o conceito Neuro360 em fluxo de produto testável.</p>
+    <div id="rulesContainer"></div>
+  </aside>
+</div>
+
+<script>
+const screens = [
+{
+id:"home", name:"1. Início",
+header:"Olá, Marina", sub:"Seu cuidado em um só lugar",
+body:`
+<div class="card hero">
+  <h3>Como você está hoje?</h3>
+  <p>Registre seu bem-estar e ajude sua equipe de cuidado a acompanhar sua jornada.</p>
+</div>
+<div class="section-title"><h3>Acesso rápido</h3></div>
+<div class="grid2">
+ <div class="quick" onclick="go('journey')"><div class="icon">◎</div><b>Minha jornada</b><span>Plano e próximos passos</span></div>
+ <div class="quick" onclick="go('network')"><div class="icon">⌕</div><b>Especialistas</b><span>Encontre a rede adequada</span></div>
+ <div class="quick" onclick="go('crisis')"><div class="icon">!</div><b>Preciso de apoio</b><span>Orientação em crise</span></div>
+ <div class="quick" onclick="go('agenda')"><div class="icon">▣</div><b>Agenda</b><span>Consultas e terapias</span></div>
+</div>
+<div class="section-title"><h3>Seu plano de cuidado</h3><span class="link" onclick="go('journey')">ver detalhes</span></div>
+<div class="card">
+ <div class="row-between"><b>Semana 4 de 8</b><span class="badge">62% concluído</span></div>
+ <div class="progress"><i></i></div>
+ <div class="meta">Próxima ação: avaliação com psicologia • amanhã, 15:00</div>
+</div>
+<div class="section-title"><h3>Próximo atendimento</h3></div>
+<div class="card row">
+ <div class="prof">🧠</div>
+ <div><b>Dra. Ana Ribeiro</b><div class="meta">Psicologia • Teleconsulta</div><div class="meta">Amanhã • 15:00</div></div>
+</div>`
+},
+{
+id:"onboarding", name:"2. Onboarding",
+header:"Bem-vindo ao Neuro360", sub:"Personalize sua jornada",
+body:`
+<div class="card">
+ <b>Para quem é o cuidado?</b>
+ <div style="margin-top:9px"><span class="chip selected">Para mim</span><span class="chip">Para meu dependente</span></div>
+</div>
+<div class="card">
+ <label class="label">Condição principal</label>
+ <span class="chip selected">TDAH</span><span class="chip">TEA</span><span class="chip">Dislexia</span><span class="chip">Tourette</span><span class="chip">Em investigação</span>
+ <label class="label">O que mais precisa de ajuda agora?</label>
+ <span class="chip selected">Organizar cuidado</span><span class="chip">Encontrar especialista</span><span class="chip">Lidar com crises</span><span class="chip">Entender próximos passos</span>
+</div>
+<div class="card">
+ <label class="label">Posso compartilhar dados com minha equipe de cuidado?</label>
+ <div class="alert ok">Você controla o consentimento e pode revogá-lo a qualquer momento.</div>
+ <div style="margin-top:10px"><span class="chip selected">Sim, autorizo</span><span class="chip">Agora não</span></div>
+</div>
+<button class="btn" onclick="go('home')">Criar minha jornada</button>`
+},
+{
+id:"journey", name:"3. Minha jornada",
+header:"Minha jornada", sub:"Plano integrado de cuidado",
+body:`
+<div class="card">
+ <div class="row-between"><b>Objetivo atual</b><span class="badge">Em andamento</span></div>
+ <p style="font-size:12px;margin:8px 0 0">Melhorar rotina, reduzir sobrecarga e organizar acompanhamento multidisciplinar.</p>
+</div>
+<div class="section-title"><h3>Próximos passos</h3></div>
+<div class="card timeline">
+ <div class="titem"><b>Consulta de psicologia</b><div class="meta">Amanhã • 15:00 • teleconsulta</div></div>
+ <div class="titem"><b>Terapia ocupacional</b><div class="meta">23 ago • 10:30 • presencial</div></div>
+ <div class="titem"><b>Revisão do plano</b><div class="meta">30 ago • com coordenador de cuidado</div></div>
+</div>
+<div class="section-title"><h3>Equipe de cuidado</h3></div>
+<div class="card">
+ <div class="row"><div class="prof">🧠</div><div><b>Psicologia</b><div class="meta">Dra. Ana Ribeiro</div></div></div>
+ <hr style="border:0;border-top:1px solid var(--line);margin:12px 0">
+ <div class="row"><div class="prof">🧩</div><div><b>Terapia ocupacional</b><div class="meta">Carlos Mendes</div></div></div>
+</div>
+<button class="btn secondary" onclick="go('share')">Compartilhar resumo clínico</button>`
+},
+{
+id:"network", name:"4. Rede especializada",
+header:"Encontrar especialista", sub:"Rede Care Plus filtrada para sua necessidade",
+body:`
+<input class="input" placeholder="Busque por especialidade, nome ou local"/>
+<div style="margin:10px 0"><span class="chip selected">TDAH</span><span class="chip">Teleconsulta</span><span class="chip">Até 5 km</span></div>
+<div class="card">
+ <div class="row-between">
+  <div class="row"><div class="prof">🧠</div><div><b>Dra. Ana Ribeiro</b><div class="meta">Psicologia • TDAH adulto</div><div class="meta">Teleconsulta • próxima vaga: amanhã</div></div></div>
+  <span class="badge">Rede</span>
+ </div>
+ <button class="btn" style="margin-top:12px" onclick="go('agenda')">Agendar</button>
+</div>
+<div class="card">
+ <div class="row-between">
+  <div class="row"><div class="prof">🧩</div><div><b>Instituto Horizonte</b><div class="meta">Equipe multidisciplinar</div><div class="meta">3,2 km • próxima vaga: 26 ago</div></div></div>
+  <span class="badge">Rede</span>
+ </div>
+ <button class="btn secondary" style="margin-top:12px">Ver perfil</button>
+</div>`
+},
+{
+id:"crisis", name:"5. Apoio em crise",
+header:"Preciso de apoio agora", sub:"Orientação rápida e segura",
+body:`
+<div class="alert danger"><b>Se houver risco imediato à vida ou segurança, procure o serviço de emergência apropriado.</b></div>
+<div class="card">
+ <b>O que está acontecendo?</b>
+ <div style="margin-top:8px">
+  <span class="chip selected">Sobrecarga sensorial</span><span class="chip">Crise emocional</span><span class="chip">Ansiedade intensa</span><span class="chip">Outro</span>
+ </div>
+</div>
+<div class="card">
+ <b>Plano rápido de regulação</b>
+ <div class="timeline" style="margin-top:12px">
+  <div class="titem"><b>1. Reduza estímulos</b><div class="meta">Procure um local mais silencioso e confortável.</div></div>
+  <div class="titem"><b>2. Use sua estratégia preferida</b><div class="meta">Respiração, fone, objeto de conforto ou pausa.</div></div>
+  <div class="titem"><b>3. Acione sua rede de apoio</b><div class="meta">Contato cadastrado: Paula • familiar</div></div>
+ </div>
+</div>
+<button class="btn">Falar com suporte Care Plus</button>
+<button class="btn secondary" style="margin-top:9px">Avisar meu contato de apoio</button>`
+},
+{
+id:"agenda", name:"6. Agenda",
+header:"Agenda integrada", sub:"Consultas, terapias e lembretes",
+body:`
+<div class="card">
+ <div class="row-between"><div><b>Amanhã • 15:00</b><div class="meta">Psicologia • Dra. Ana Ribeiro</div></div><span class="badge">Teleconsulta</span></div>
+ <button class="btn" style="margin-top:12px">Entrar na consulta</button>
+</div>
+<div class="card">
+ <div class="row-between"><div><b>23 ago • 10:30</b><div class="meta">Terapia ocupacional • Carlos Mendes</div></div><span class="badge">Presencial</span></div>
+ <button class="btn secondary" style="margin-top:12px">Ver detalhes</button>
+</div>
+<div class="card">
+ <b>Lembretes inteligentes</b>
+ <p class="meta">Ativos para consultas, terapias e revisão do plano de cuidado.</p>
+ <div class="alert ok">Você receberá aviso 24h e 2h antes.</div>
+</div>`
+},
+{
+id:"share", name:"7. Compartilhamento",
+header:"Compartilhar resumo", sub:"Você decide o que cada pessoa pode ver",
+body:`
+<div class="card">
+ <b>Destinatário</b>
+ <select class="input" style="margin-top:8px"><option>Dra. Ana Ribeiro — Psicologia</option><option>Carlos Mendes — Terapia ocupacional</option><option>Familiar / cuidador</option></select>
+</div>
+<div class="card">
+ <b>Informações a compartilhar</b>
+ <div style="margin-top:8px"><span class="chip selected">Plano de cuidado</span><span class="chip selected">Agenda</span><span class="chip selected">Evolução</span><span class="chip">Notas pessoais</span></div>
+</div>
+<div class="card">
+ <b>Prazo de acesso</b>
+ <div style="margin-top:8px"><span class="chip">24 horas</span><span class="chip selected">30 dias</span><span class="chip">Enquanto estiver na equipe</span></div>
+</div>
+<div class="alert warn">Dados sensíveis só são compartilhados após consentimento explícito.</div>
+<button class="btn" style="margin-top:12px">Autorizar compartilhamento</button>`
+},
+{
+id:"profile", name:"8. Perfil e preferências",
+header:"Perfil e preferências", sub:"Acessibilidade e privacidade",
+body:`
+<div class="card">
+ <b>Preferências sensoriais</b>
+ <p class="meta">Ajuste a experiência do app às suas necessidades.</p>
+ <div><span class="chip selected">Menos animações</span><span class="chip selected">Textos objetivos</span><span class="chip">Alto contraste</span></div>
+</div>
+<div class="card">
+ <b>Rede de apoio</b>
+ <div class="row" style="margin-top:10px"><div class="avatar">P</div><div><b>Paula</b><div class="meta">Familiar • contato de apoio</div></div></div>
+ <button class="btn secondary" style="margin-top:12px">Gerenciar contatos</button>
+</div>
+<div class="card">
+ <b>Consentimentos e dados</b>
+ <p class="meta">Revise quem pode acessar seus dados e por quanto tempo.</p>
+ <button class="btn secondary">Gerenciar consentimentos</button>
+</div>`
+}
+];
+
+const rules = [
+["RN01 — Elegibilidade","O Neuro360 é exibido apenas para beneficiários ativos e elegíveis ao produto. Dependentes podem ser incluídos por responsável autorizado."],
+["RN02 — Onboarding mínimo","Para criar uma jornada, o usuário informa para quem é o cuidado, condição principal (ou “em investigação”) e principal necessidade atual."],
+["RN03 — Personalização","Recomendações de conteúdo, profissionais e próximos passos consideram perfil, condição informada, preferências sensoriais e histórico da jornada."],
+["RN04 — Rede credenciada","Resultados de especialistas devem priorizar prestadores elegíveis à rede do plano e sinalizar modalidade, distância e próxima disponibilidade."],
+["RN05 — Coordenação do cuidado","Consultas, terapias e revisões compõem um plano longitudinal único. Alterações relevantes geram atualização da jornada e, quando autorizado, aviso à equipe."],
+["RN06 — Consentimento","Compartilhamento de dados clínicos ou comportamentais exige consentimento explícito, granular, com destinatário, escopo e prazo de acesso."],
+["RN07 — Revogação","O beneficiário pode revogar consentimentos a qualquer momento; a revogação bloqueia novos acessos, preservando registros legais/auditoria quando aplicável."],
+["RN08 — Apoio em crise","O módulo de crise oferece orientação e acionamento de suporte, mas não substitui serviço de emergência. Risco imediato deve ser direcionado para atendimento emergencial."],
+["RN09 — Rede de apoio","Contato de apoio só pode ser acionado se previamente cadastrado e autorizado pelo usuário/responsável."],
+["RN10 — Agenda integrada","Agendamentos confirmados alimentam a jornada; lembretes padrão são enviados 24h e 2h antes, respeitando preferências de comunicação."],
+["RN11 — Perfis de acesso","Beneficiário, responsável, profissional de saúde e Care Plus possuem visões diferentes. Profissionais acessam apenas dados autorizados e necessários ao cuidado."],
+["RN12 — Acessibilidade","Preferências como redução de animações, linguagem objetiva e contraste devem ser persistidas no perfil e aplicadas em todas as telas."],
+["RN13 — Registro longitudinal","Interações relevantes (agendamento, comparecimento, atualização de plano, crise registrada e consentimento) entram na linha do tempo do cuidado."],
+["RN14 — Dados e privacidade","Dados sensíveis devem ter trilha de auditoria, controle de acesso e finalidade de uso explícita, seguindo princípios de minimização e necessidade."],
+["RN15 — Métricas do MVP","Acompanhar ativação no Neuro360, conclusão do onboarding, busca→agendamento, adesão ao plano de cuidado, uso do suporte em crise, satisfação e redução de navegação fragmentada."]
+];
+
+function bottom(active){
+ const tabs=[["home","⌂","Início"],["journey","◎","Jornada"],["network","⌕","Rede"],["crisis","!","Apoio"],["profile","☻","Perfil"]];
+ return `<div class="bottom">${tabs.map(t=>`<div class="tab ${active===t[0]?'active':''}" onclick="go('${t[0]}')"><b>${t[1]}</b>${t[2]}</div>`).join("")}</div>`;
+}
+function render(id){
+ const s=screens.find(x=>x.id===id)||screens[0];
+ document.querySelector("#screenContainer").innerHTML=
+ `<div class="header"><div class="header-top"><div><h2>${s.header}</h2><p>${s.sub}</p></div><div class="avatar">M</div></div></div>
+ <div class="content">${s.body}</div>${bottom(id)}`;
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.id===id));
+}
+function go(id){render(id)}
+document.querySelector("#nav").innerHTML=screens.map(s=>`<button data-id="${s.id}" onclick="go('${s.id}')">${s.name}</button>`).join("");
+document.querySelector("#rulesContainer").innerHTML=rules.map(r=>`<div class="rule"><b>${r[0]}</b><p>${r[1]}</p></div>`).join("");
+render("home");
+</script>
+</body>
+</html>

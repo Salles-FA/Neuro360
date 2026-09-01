@@ -1,0 +1,10 @@
+{
+  "description": "Designed for neurodivergent patients and their caregivers, this app offers emotional check-ins, therapy tracking, and access to specialized support in a calming interface.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

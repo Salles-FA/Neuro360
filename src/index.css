@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #eef4f6;
+  --color-foreground: #26333a;
+  --color-card: #ffffff;
+  --color-card-foreground: #26333a;
+  --color-primary: #5b8fb0;
+  --color-primary-foreground: #ffffff;
+  --color-primary-soft: #dfecf3;
+  --color-secondary: #eef4f6;
+  --color-secondary-foreground: #3f5560;
+  --color-sage: #8bab97;
+  --color-sage-soft: #e2ece6;
+  --color-sage-foreground: #35503f;
+  --color-muted: #f4f8f9;
+  --color-muted-foreground: #6b8089;
+  --color-border: #dde7ea;
+  --color-danger: #d98a8a;
+  --color-danger-soft: #f7e9e9;
+  --color-ring: #5b8fb0;
+
+  --font-sans: 'Atkinson Hyperlegible', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+
+  --radius: 20px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-foreground);
+  background: #d7e3e8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide scrollbars until scrolling; keep content scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(0.72);
+  }
+  50% {
+    transform: scale(1);
+  }
+}
+
+.animate-breathe {
+  animation: breathe 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-breathe {
+    animation: none;
+    transform: scale(0.9);
+  }
+}
