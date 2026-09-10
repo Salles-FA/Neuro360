@@ -3,6 +3,7 @@
 Aplicativo mobile de saúde premium para pacientes neurodivergentes (TEA, TDAH, dislexia) e seus cuidadores. Design minimalista, acessível e sem sobrecarga sensorial.
 
 O protótipo está acessível em: https://drift-steep-47544393.figma.site
+Uma versão explicativa do protótipo pode ser visualizada em: https://salles-fa.github.io/Neuro360/Neuro360_prototipo_navegavel_Discovery%20Care%20Plus.html
 
 ## Visão Geral
 
