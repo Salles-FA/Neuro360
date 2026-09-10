@@ -2,6 +2,8 @@
 
 Aplicativo mobile de saúde premium para pacientes neurodivergentes (TEA, TDAH, dislexia) e seus cuidadores. Design minimalista, acessível e sem sobrecarga sensorial.
 
+O protótipo está acessível em: https://drift-steep-47544393.figma.site
+
 ## Visão Geral
 
 O Care Plus Neuro360 oferece:
